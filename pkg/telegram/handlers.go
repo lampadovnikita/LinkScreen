@@ -11,9 +11,9 @@ import (
 
 func (b *Bot) handleCommand(message *tgbotapi.Message) error {
 	switch message.Command() {
-	case b.messages.Commands.Start:
+	case b.commands.Start:
 		return b.handleStartCommand(message)
-	case b.messages.Commands.Help:
+	case b.commands.Help:
 		return b.handleHelpCommand(message)
 	default:
 		return b.handleUnknownCommand(message)
@@ -21,22 +21,22 @@ func (b *Bot) handleCommand(message *tgbotapi.Message) error {
 }
 
 func (b *Bot) handleStartCommand(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, b.messages.Responses.Start)
-	_, err := b.bot.Send(msg)
+	text := b.localizations[b.getLangCode(message)].Responses.Start
+	err := b.sendResponseText(message.From.ID, text)
 
 	return err
 }
 
 func (b *Bot) handleHelpCommand(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, b.messages.Responses.Help)
-	_, err := b.bot.Send(msg)
+	text := b.localizations[b.getLangCode(message)].Responses.Help
+	err := b.sendResponseText(message.From.ID, text)
 
 	return err
 }
 
 func (b *Bot) handleUnknownCommand(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, b.messages.Responses.UnknownCommand)
-	_, err := b.bot.Send(msg)
+	text := b.localizations[b.getLangCode(message)].Responses.UnknownCommand
+	err := b.sendResponseText(message.From.ID, text)
 
 	return err
 }
@@ -84,4 +84,15 @@ func screenshotTask(url string, imageBuf *[]byte) chromedp.Tasks {
 			return err
 		}),
 	}
+}
+
+func (b *Bot) sendResponseText(chatID int64, text string) error {
+	msg := tgbotapi.NewMessage(chatID, text)
+	_, err := b.bot.Send(msg)
+
+	return err
+}
+
+func (b *Bot) getLangCode(msg *tgbotapi.Message) string {
+	return msg.From.LanguageCode
 }

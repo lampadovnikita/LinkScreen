@@ -6,12 +6,13 @@ import (
 )
 
 type Bot struct {
-	bot      *tgbotapi.BotAPI
-	messages config.Messages
+	bot           *tgbotapi.BotAPI
+	commands      config.Commands
+	localizations map[string]config.Messages
 }
 
-func NewBot(bot *tgbotapi.BotAPI, messages config.Messages) *Bot {
-	return &Bot{bot: bot, messages: messages}
+func NewBot(bot *tgbotapi.BotAPI, commands config.Commands, localizations map[string]config.Messages) *Bot {
+	return &Bot{bot: bot, commands: commands, localizations: localizations}
 }
 
 func (b *Bot) Start() {
@@ -27,14 +28,14 @@ func (b *Bot) Start() {
 
 		if update.Message.IsCommand() {
 			if err := b.handleCommand(update.Message); err != nil {
-				b.handleError(update.Message.Chat.ID, err)
+				b.handleError(update.Message, err)
 			}
 
 			continue
 		}
 
 		if err := b.handleMessage(update.Message); err != nil {
-			b.handleError(update.Message.Chat.ID, err)
+			b.handleError(update.Message, err)
 		}
 	}
 }

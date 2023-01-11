@@ -10,16 +10,18 @@ var (
 	nonURLError = errors.New("Text is not a link")
 )
 
-func (b *Bot) handleError(chatID int64, err error) {
+func (b *Bot) handleError(message *tgbotapi.Message, err error) {
 	var messageText string
+
+	langCode := message.From.LanguageCode
 
 	switch err {
 	case nonURLError:
-		messageText = b.messages.Errors.NonURL
+		messageText = b.localizations[langCode].Errors.NonURL
 	default:
-		messageText = b.messages.Errors.Default
+		messageText = b.localizations[langCode].Errors.Default
 	}
 
-	msg := tgbotapi.NewMessage(chatID, messageText)
+	msg := tgbotapi.NewMessage(message.From.ID, messageText)
 	b.bot.Send(msg)
 }

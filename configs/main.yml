@@ -1,11 +1,21 @@
+commands:
+  start: "start"
+  help: "help"
+
 messages:
-  commands:
-    start: "start"
-    help: "help"
-  response:
-    start: "Привет, кидай ссылку и я отправлю тебе визуал соответствующей странички. Для более детальной информации можешь ввести команду '/help' или воспользоваться кнопкой меню."
-    help: "Этот бот создан, чтобы ты мог проверять сомнительные или подозрительные ссылки. Просто кинь сюда ссылку и я покажу тебе, как выглядит страничка, которую ты опасаешься посетить."
-    unknown_command: "Не знаю такой команды, но может быть однажды..." 
-  errors:
-    default: "Блин, произошла какая-то непонятная ошибка, возможно позже я смогу тебе помочь, но это не точно :)"
-    non_url: "Гм, похоже ты скинул не ссылку, если ты уверен в обратном, то попробуй привести её в более ссылочный формат."
+  en:
+    response:
+      start: "Hello, send me a link and I will send you a screen of the corresponding website. For more detailed information, you can enter the command '/help' or use the menu button."
+      help: "This bot is designed so that you can check for questionable or suspicious links. Just drop a link here and I'll show you what the page you're afraid to visit looks like."
+      unknown_command: "I don't know this command, but maybe one day..."
+    errors:
+      default: "Damn, there was some kind of incomprehensible error, maybe later I can help you, but this is not for sure :)"
+      non_url: "Hmm, it looks like you did not send a link, if you are sure of the opposite, then try to convert it into a more linkable format."
+  ru:
+    response:
+      start: "Привет, кидай ссылку и я отправлю тебе визуал соответствующей странички. Для более детальной информации можешь ввести команду '/help' или воспользоваться кнопкой меню."
+      help: "Этот бот создан, чтобы ты мог проверять сомнительные или подозрительные ссылки. Просто кинь сюда ссылку и я покажу тебе, как выглядит страничка, которую ты опасаешься посетить."
+      unknown_command: "Не знаю такой команды, но может быть однажды..." 
+    errors:
+      default: "Блин, произошла какая-то непонятная ошибка, возможно позже я смогу тебе помочь, но это не точно :)"
+      non_url: "Гм, похоже ты скинул не ссылку, если ты уверен в обратном, то попробуй привести её в более ссылочный формат."

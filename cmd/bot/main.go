@@ -18,6 +18,6 @@ func main() {
 	}
 	botApi.Debug = true
 
-	bot := telegram.NewBot(botApi, cfg.Messages)
+	bot := telegram.NewBot(botApi, cfg.Commands, cfg.Localizations)
 	bot.Start()
 }

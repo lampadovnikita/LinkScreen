@@ -5,7 +5,6 @@ import (
 )
 
 type Messages struct {
-	Commands
 	Responses
 	Errors
 }
@@ -28,7 +27,8 @@ type Errors struct {
 
 type Config struct {
 	TelegramBotToken string
-	Messages         Messages
+	Commands         Commands
+	Localizations    map[string]Messages
 }
 
 func Init() (*Config, error) {
@@ -53,17 +53,29 @@ func unmarshal(cfg *Config) error {
 		return err
 	}
 
-	if err := viper.UnmarshalKey("messages.commands", &cfg.Messages.Commands); err != nil {
+	if err := viper.UnmarshalKey("commands", &cfg.Commands); err != nil {
 		return err
 	}
 
-	if err := viper.UnmarshalKey("messages.response", &cfg.Messages.Responses); err != nil {
-		return err
-	}
+	cfg.Localizations = make(map[string]Messages)
 
-	if err := viper.UnmarshalKey("messages.response", &cfg.Messages.Responses); err != nil {
+	engMessages := Messages{}
+	if err := viper.UnmarshalKey("messages.en.response", &engMessages.Responses); err != nil {
 		return err
 	}
+	if err := viper.UnmarshalKey("messages.en.errors", &engMessages.Errors); err != nil {
+		return err
+	}
+	cfg.Localizations["en"] = engMessages
+
+	ruMessages := Messages{}
+	if err := viper.UnmarshalKey("messages.ru.response", &ruMessages.Responses); err != nil {
+		return err
+	}
+	if err := viper.UnmarshalKey("messages.ru.errors", &ruMessages.Errors); err != nil {
+		return err
+	}
+	cfg.Localizations["ru"] = ruMessages
 
 	return nil
 }
