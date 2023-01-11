@@ -4,6 +4,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	tokenKey = "LINK_SCREEN_TGBOT_TOKEN"
+)
+
 type Messages struct {
 	Responses
 	Errors
@@ -81,10 +85,10 @@ func unmarshal(cfg *Config) error {
 }
 
 func grabEnvVars(cfg *Config) error {
-	if err := viper.BindEnv("LINK_SCREEN_TGBOT_TOKEN"); err != nil {
+	if err := viper.BindEnv(tokenKey); err != nil {
 		return err
 	}
-	cfg.TelegramBotToken = viper.GetString("LINK_SCREEN_TGBOT_TOKEN")
+	cfg.TelegramBotToken = viper.GetString(tokenKey)
 
 	return nil
 }
