@@ -1,11 +1,8 @@
 package telegram
 
 import (
-	"context"
 	"net/url"
 
-	"github.com/chromedp/cdproto/page"
-	"github.com/chromedp/chromedp"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
@@ -55,30 +52,16 @@ func (b *Bot) handleMessage(message *tgbotapi.Message) error {
 }
 
 func (b *Bot) handleURL(chatID int64, url string) error {
-	ctx, cancel := chromedp.NewContext(context.Background())
-	defer cancel()
-
-	var imageBuf []byte
-	if err := chromedp.Run(ctx, screenshotTask(url, &imageBuf)); err != nil {
+	imageBytes, err := TakeScreen(url)
+	if err != nil {
 		return err
 	}
 
-	if err := b.sendPhoto(chatID, &imageBuf); err != nil {
+	if err := b.sendPhoto(chatID, imageBytes); err != nil {
 		return err
 	}
 
 	return nil
-}
-
-func screenshotTask(url string, imageBuf *[]byte) chromedp.Tasks {
-	return chromedp.Tasks{
-		chromedp.Navigate(url),
-		chromedp.ActionFunc(func(c context.Context) (err error) {
-			*imageBuf, err = page.CaptureScreenshot().WithQuality(90).Do(c)
-
-			return err
-		}),
-	}
 }
 
 func (b *Bot) getLangCode(msg *tgbotapi.Message) string {
