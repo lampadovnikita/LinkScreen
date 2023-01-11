@@ -21,7 +21,7 @@
 go.work
 
 # vscode directories
-.vscode/
+.vscode
 
 # Local History for Visual Studio Code
 .history/
@@ -30,4 +30,4 @@ go.work
 *.vsix
 
 # Local directory containing executable files
-.bin/
+.bin
