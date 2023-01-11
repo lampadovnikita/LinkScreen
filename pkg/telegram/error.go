@@ -10,7 +10,7 @@ var (
 	nonURLError = errors.New("Text is not a link")
 )
 
-func (b *Bot) handleError(message *tgbotapi.Message, err error) {
+func (b *Bot) handleError(message *tgbotapi.Message, err error) error {
 	var messageText string
 
 	langCode := message.From.LanguageCode
@@ -22,6 +22,9 @@ func (b *Bot) handleError(message *tgbotapi.Message, err error) {
 		messageText = b.localizations[langCode].Errors.Default
 	}
 
-	msg := tgbotapi.NewMessage(message.From.ID, messageText)
-	b.bot.Send(msg)
+	if err := b.sendResponseText(message.From.ID, messageText); err != nil {
+		return err
+	}
+
+	return nil
 }

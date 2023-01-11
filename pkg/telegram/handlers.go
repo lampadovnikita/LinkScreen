@@ -63,12 +63,7 @@ func (b *Bot) handleURL(chatID int64, url string) error {
 		return err
 	}
 
-	photoBytes := tgbotapi.FileBytes{Name: "screen", Bytes: imageBuf}
-
-	photo := tgbotapi.NewPhoto(chatID, photoBytes)
-
-	_, err := b.bot.Send(photo)
-	if err != nil {
+	if err := b.sendPhoto(chatID, &imageBuf); err != nil {
 		return err
 	}
 
@@ -84,13 +79,6 @@ func screenshotTask(url string, imageBuf *[]byte) chromedp.Tasks {
 			return err
 		}),
 	}
-}
-
-func (b *Bot) sendResponseText(chatID int64, text string) error {
-	msg := tgbotapi.NewMessage(chatID, text)
-	_, err := b.bot.Send(msg)
-
-	return err
 }
 
 func (b *Bot) getLangCode(msg *tgbotapi.Message) string {
