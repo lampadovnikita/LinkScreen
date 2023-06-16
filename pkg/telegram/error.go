@@ -2,6 +2,7 @@ package telegram
 
 import (
 	"errors"
+	"log"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -11,6 +12,8 @@ var (
 )
 
 func (b *Bot) handleError(message *tgbotapi.Message, err error) error {
+	log.Println("Handle error:", err)
+
 	var messageText string
 
 	langCode := message.From.LanguageCode
