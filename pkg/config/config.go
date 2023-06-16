@@ -35,8 +35,8 @@ type Config struct {
 	Localizations    map[string]Messages
 }
 
-func Init() (*Config, error) {
-	if err := setUp(); err != nil {
+func Init(configFilesFolderPath string) (*Config, error) {
+	if err := setUp(configFilesFolderPath); err != nil {
 		return nil, err
 	}
 
@@ -93,8 +93,8 @@ func grabEnvVars(cfg *Config) error {
 	return nil
 }
 
-func setUp() error {
-	viper.AddConfigPath("configs")
+func setUp(configFilesFolderPath string) error {
+	viper.AddConfigPath(configFilesFolderPath)
 	viper.SetConfigName("main")
 
 	return viper.ReadInConfig()
