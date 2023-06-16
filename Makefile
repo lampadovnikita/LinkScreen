@@ -5,3 +5,6 @@ build:
 
 run:	build
 		./.bin/bot
+
+service-update: build
+	systemctl restart link-screen.service
